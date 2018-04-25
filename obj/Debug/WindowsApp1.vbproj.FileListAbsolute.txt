@@ -1,0 +1,25 @@
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\bin\Debug\WindowsApp1.exe.config
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\bin\Debug\WindowsApp1.exe
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\bin\Debug\WindowsApp1.pdb
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\bin\Debug\WindowsApp1.xml
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.vbprojResolveAssemblyReference.cache
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.Resources.resources
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.vbproj.GenerateResource.Cache
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.vbproj.CoreCompileInputs.cache
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.exe
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.xml
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.pdb
+C:\Users\Lucas\AppData\Local\Temporary Projects\WindowsApp1\obj\Debug\WindowsApp1.main.resources
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\bin\Debug\WindowsApp1.exe.config
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\bin\Debug\WindowsApp1.exe
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\bin\Debug\WindowsApp1.pdb
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\bin\Debug\WindowsApp1.xml
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.main.resources
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.Resources.resources
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.vbproj.GenerateResource.Cache
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.vbproj.CoreCompileInputs.cache
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.exe
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.xml
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.pdb
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\Interop.IWshRuntimeLibrary.dll
+C:\Users\Lucas\source\repos\WindowsApp1\WindowsApp1\obj\Debug\WindowsApp1.vbproj.ResolveComReference.cache
