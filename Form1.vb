@@ -14,11 +14,12 @@ Public Class main
     Dim selected As Boolean = False
     Dim nircmd As Boolean = False
     Dim NirCMDPath As String
+    Dim selectedIcon As Icon
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
-
-
+        'Populates active audio devices'
+        'May fail at any point'
         Try
             Using myKey As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("MMDevices").OpenSubKey("Audio").OpenSubKey("Render")
                 Try
@@ -40,6 +41,9 @@ Public Class main
             End Using
         Catch ex As Exception
         End Try
+
+        status.Text = "Click Install NirCMD or Click Locate"
+        Me.Update()
     End Sub
 
     Private Sub createShortcutBtn_Click(sender As Object, e As EventArgs) Handles createShortcutBtn.Click
@@ -51,8 +55,8 @@ Public Class main
 
         If (file.Exists) Then
             status.Text = "File exists: " + NirCMDPath + "\" + name + ".bat"
-            Threading.Thread.Sleep(500)
             Me.Update()
+            Threading.Thread.Sleep(1000)
             file.Delete()
             status.Text = "Removed: " + NirCMDPath + "\" + name + ".bat"
             Me.Update()
@@ -61,8 +65,9 @@ Public Class main
 
 
         status.Text = "Creating Batch: " + NirCMDPath + "\" + name + ".bat"
-        Threading.Thread.Sleep(500)
         Me.Update()
+        Threading.Thread.Sleep(500)
+
 
         Dim fs As StreamWriter
         fs = New StreamWriter(file.ToString(), True)
@@ -74,8 +79,9 @@ Public Class main
         fs.Close()
 
         status.Text = "Batch created"
-        Threading.Thread.Sleep(500)
         Me.Update()
+        Threading.Thread.Sleep(500)
+
 
 
         Dim wsh = CreateObject("WScript.Shell")
@@ -90,15 +96,26 @@ Public Class main
 
         MyShortcut = wsh.CreateShortcut($"{DesktopPath}\{name}.lnk")
 
-        Dim path = $"{NirCMDPath}\{name}.bat\"
-        MyShortcut.TargetPath = path
+        MyShortcut.TargetPath = "C:\Windows\system32\cmd.exe"
+        MyShortcut.Arguments = $"/c ""{NirCMDPath}\{name}.bat"""
 
         MyShortcut.WorkingDirectory = wsh.ExpandEnvironmentStrings(NirCMDPath)
+
+        Dim dll As FileInfo = New FileInfo("C:\Windows\system32\ddores.dll")
+        If dll.Exists Then
+            MyShortcut.IconLocation = "%systemroot%\system32\ddores.dll,1"
+        End If
+
         MyShortcut.WindowStyle = 4
         MyShortcut.Save()
 
-        status.Text = "Shortcut created"
-        Threading.Thread.Sleep(500)
+        status.Text = "Shortcut created on Desktop"
+        Me.Update()
+        Threading.Thread.Sleep(1500)
+
+
+        status.Text = "Done"
+
         Me.Update()
 
 
@@ -187,7 +204,14 @@ Public Class main
         nircmd = True
         If (nircmd = True And selected = True) Then
             createShortcutBtn.Enabled = True
+            Threading.Thread.Sleep(1000)
+            status.Text = "Click Create Shortcut"
+        Else
+            Threading.Thread.Sleep(1000)
+            status.Text = "Select audio device and click Create Shortcut"
         End If
+
+
     End Sub
 
     Private Sub setLoactionbtn_Click(sender As Object, e As EventArgs) Handles setLoactionbtn.Click
@@ -221,6 +245,11 @@ Public Class main
         nircmd = True
         If (nircmd = True And selected = True) Then
             createShortcutBtn.Enabled = True
+            Threading.Thread.Sleep(1000)
+            status.Text = "Click Create Shortcut"
+        Else
+            Threading.Thread.Sleep(1000)
+            status.Text = "Select audio device and click Create Shortcut"
         End If
 
     End Sub
@@ -241,6 +270,10 @@ Public Class main
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
-        MessageBox.Show("To make shortcut pinnable to taskbar, add ""%SystemRoot%\system32\cmd.exe /c"" to the font of the target path.")
+        MessageBox.Show("Creates a taskbar pinnable shortcut to switch audio outputs")
     End Sub
+
+
+
+
 End Class

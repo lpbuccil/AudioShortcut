@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class main
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class main
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.audioDeviceCB = New System.Windows.Forms.ListBox()
         Me.createShortcutBtn = New System.Windows.Forms.Button()
@@ -96,9 +96,9 @@ Partial Class main
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(367, 203)
+        Me.Controls.Add(Me.setLoactionbtn)
         Me.Controls.Add(Me.btnHelp)
         Me.Controls.Add(Me.StatusStrip1)
-        Me.Controls.Add(Me.setLoactionbtn)
         Me.Controls.Add(Me.installBtn)
         Me.Controls.Add(Me.createShortcutBtn)
         Me.Controls.Add(Me.audioDeviceCB)
@@ -119,4 +119,5 @@ Partial Class main
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents status As ToolStripStatusLabel
     Friend WithEvents btnHelp As Button
+    Friend WithEvents ListView1 As ListView
 End Class

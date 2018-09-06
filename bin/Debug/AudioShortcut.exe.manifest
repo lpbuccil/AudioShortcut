@@ -43,24 +43,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AudioShortcut.exe" size="189880">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AudioShortcut.exe" size="1218488">
       <assemblyIdentity name="AudioShortcut" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>bjk4ajPQqa+Qk36jOKSPFoqlQF2csagRnOBlBAmAbcQ=</dsig:DigestValue>
+        <dsig:DigestValue>ILrt7Ljvt50t+NlMoevpemfT11MowV7LI9uZRCbftNc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="AudioShortcut.exe.config" size="188">
+  <file name="AudioShortcut.exe.config" size="183">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>c922zfRb5ORzqEo8SDjt8Mx8lDMhGTWhqKcK/oileDM=</dsig:DigestValue>
+      <dsig:DigestValue>042LiEJ446KnVzFq0f/nROM5GQhKLtvYxsgstLrB6/g=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Iconsmind-Outline-Speaker.ico" size="165839">

@@ -184,6 +184,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Iconsmind-Outline-Speaker.ico" />
+    <None Include="Resources\Icon1.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
