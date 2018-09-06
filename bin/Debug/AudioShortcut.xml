@@ -22,5 +22,15 @@ AudioShortcut
   resource lookups using this strongly typed resource class.
 </summary>
 </member>
+<member name="P:AudioShortcut.My.Resources.Resources.ico3011">
+<summary>
+  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+</summary>
+</member>
+<member name="P:AudioShortcut.My.Resources.Resources.ico3012">
+<summary>
+  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+</summary>
+</member>
 </members>
 </doc>

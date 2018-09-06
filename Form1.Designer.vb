@@ -22,6 +22,7 @@ Partial Class main
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(main))
         Me.audioDeviceCB = New System.Windows.Forms.ListBox()
         Me.createShortcutBtn = New System.Windows.Forms.Button()
         Me.installBtn = New System.Windows.Forms.Button()
@@ -29,7 +30,15 @@ Partial Class main
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.status = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btnHelp = New System.Windows.Forms.Button()
+        Me.grpBoxIcon = New System.Windows.Forms.GroupBox()
+        Me.ptBoxSpeaker = New System.Windows.Forms.PictureBox()
+        Me.rdoHeadPhone = New System.Windows.Forms.RadioButton()
+        Me.rdoSpeaker = New System.Windows.Forms.RadioButton()
+        Me.ptBoxHeadPhone = New System.Windows.Forms.PictureBox()
         Me.StatusStrip1.SuspendLayout()
+        Me.grpBoxIcon.SuspendLayout()
+        CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ptBoxHeadPhone, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'audioDeviceCB
@@ -91,11 +100,65 @@ Partial Class main
         Me.btnHelp.Text = "Info"
         Me.btnHelp.UseVisualStyleBackColor = True
         '
+        'grpBoxIcon
+        '
+        Me.grpBoxIcon.Controls.Add(Me.ptBoxHeadPhone)
+        Me.grpBoxIcon.Controls.Add(Me.ptBoxSpeaker)
+        Me.grpBoxIcon.Controls.Add(Me.rdoHeadPhone)
+        Me.grpBoxIcon.Controls.Add(Me.rdoSpeaker)
+        Me.grpBoxIcon.Location = New System.Drawing.Point(160, 31)
+        Me.grpBoxIcon.Name = "grpBoxIcon"
+        Me.grpBoxIcon.Size = New System.Drawing.Size(88, 100)
+        Me.grpBoxIcon.TabIndex = 6
+        Me.grpBoxIcon.TabStop = False
+        Me.grpBoxIcon.Text = "Select Icon"
+        '
+        'ptBoxSpeaker
+        '
+        Me.ptBoxSpeaker.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.ptBoxSpeaker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.ptBoxSpeaker.Location = New System.Drawing.Point(6, 19)
+        Me.ptBoxSpeaker.Name = "ptBoxSpeaker"
+        Me.ptBoxSpeaker.Size = New System.Drawing.Size(56, 30)
+        Me.ptBoxSpeaker.TabIndex = 2
+        Me.ptBoxSpeaker.TabStop = False
+        '
+        'rdoHeadPhone
+        '
+        Me.rdoHeadPhone.AutoSize = True
+        Me.rdoHeadPhone.Location = New System.Drawing.Point(68, 61)
+        Me.rdoHeadPhone.Name = "rdoHeadPhone"
+        Me.rdoHeadPhone.Size = New System.Drawing.Size(14, 13)
+        Me.rdoHeadPhone.TabIndex = 1
+        Me.rdoHeadPhone.TabStop = True
+        Me.rdoHeadPhone.UseVisualStyleBackColor = True
+        '
+        'rdoSpeaker
+        '
+        Me.rdoSpeaker.AutoSize = True
+        Me.rdoSpeaker.Location = New System.Drawing.Point(68, 27)
+        Me.rdoSpeaker.Name = "rdoSpeaker"
+        Me.rdoSpeaker.Size = New System.Drawing.Size(14, 13)
+        Me.rdoSpeaker.TabIndex = 0
+        Me.rdoSpeaker.TabStop = True
+        Me.rdoSpeaker.UseVisualStyleBackColor = True
+        '
+        'ptBoxHeadPhone
+        '
+        Me.ptBoxHeadPhone.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.ptBoxHeadPhone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.ptBoxHeadPhone.Location = New System.Drawing.Point(6, 55)
+        Me.ptBoxHeadPhone.Name = "ptBoxHeadPhone"
+        Me.ptBoxHeadPhone.Size = New System.Drawing.Size(56, 30)
+        Me.ptBoxHeadPhone.TabIndex = 3
+        Me.ptBoxHeadPhone.TabStop = False
+        '
         'main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(367, 203)
+        Me.Controls.Add(Me.grpBoxIcon)
         Me.Controls.Add(Me.setLoactionbtn)
         Me.Controls.Add(Me.btnHelp)
         Me.Controls.Add(Me.StatusStrip1)
@@ -103,10 +166,15 @@ Partial Class main
         Me.Controls.Add(Me.createShortcutBtn)
         Me.Controls.Add(Me.audioDeviceCB)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "main"
         Me.Text = "Audio Shortcut"
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
+        Me.grpBoxIcon.ResumeLayout(False)
+        Me.grpBoxIcon.PerformLayout()
+        CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ptBoxHeadPhone, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -120,4 +188,9 @@ Partial Class main
     Friend WithEvents status As ToolStripStatusLabel
     Friend WithEvents btnHelp As Button
     Friend WithEvents ListView1 As ListView
+    Friend WithEvents grpBoxIcon As GroupBox
+    Friend WithEvents rdoHeadPhone As RadioButton
+    Friend WithEvents rdoSpeaker As RadioButton
+    Friend WithEvents ptBoxSpeaker As PictureBox
+    Friend WithEvents ptBoxHeadPhone As PictureBox
 End Class
