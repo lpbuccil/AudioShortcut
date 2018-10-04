@@ -25,20 +25,18 @@ Partial Class main
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(main))
         Me.audioDeviceCB = New System.Windows.Forms.ListBox()
         Me.createShortcutBtn = New System.Windows.Forms.Button()
-        Me.installBtn = New System.Windows.Forms.Button()
-        Me.setLoactionbtn = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.status = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btnHelp = New System.Windows.Forms.Button()
         Me.grpBoxIcon = New System.Windows.Forms.GroupBox()
+        Me.ptBoxHeadPhone = New System.Windows.Forms.PictureBox()
         Me.ptBoxSpeaker = New System.Windows.Forms.PictureBox()
         Me.rdoHeadPhone = New System.Windows.Forms.RadioButton()
         Me.rdoSpeaker = New System.Windows.Forms.RadioButton()
-        Me.ptBoxHeadPhone = New System.Windows.Forms.PictureBox()
         Me.StatusStrip1.SuspendLayout()
         Me.grpBoxIcon.SuspendLayout()
-        CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ptBoxHeadPhone, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'audioDeviceCB
@@ -46,43 +44,25 @@ Partial Class main
         Me.audioDeviceCB.FormattingEnabled = True
         Me.audioDeviceCB.Location = New System.Drawing.Point(12, 16)
         Me.audioDeviceCB.Name = "audioDeviceCB"
-        Me.audioDeviceCB.Size = New System.Drawing.Size(141, 160)
+        Me.audioDeviceCB.Size = New System.Drawing.Size(165, 160)
         Me.audioDeviceCB.TabIndex = 0
         '
         'createShortcutBtn
         '
         Me.createShortcutBtn.Enabled = False
-        Me.createShortcutBtn.Location = New System.Drawing.Point(254, 153)
+        Me.createShortcutBtn.Location = New System.Drawing.Point(194, 128)
         Me.createShortcutBtn.Name = "createShortcutBtn"
-        Me.createShortcutBtn.Size = New System.Drawing.Size(101, 23)
+        Me.createShortcutBtn.Size = New System.Drawing.Size(88, 23)
         Me.createShortcutBtn.TabIndex = 1
         Me.createShortcutBtn.Text = "Create Shortcut"
         Me.createShortcutBtn.UseVisualStyleBackColor = True
-        '
-        'installBtn
-        '
-        Me.installBtn.Location = New System.Drawing.Point(254, 31)
-        Me.installBtn.Name = "installBtn"
-        Me.installBtn.Size = New System.Drawing.Size(101, 21)
-        Me.installBtn.TabIndex = 2
-        Me.installBtn.Text = "Install NirCMD"
-        Me.installBtn.UseVisualStyleBackColor = True
-        '
-        'setLoactionbtn
-        '
-        Me.setLoactionbtn.Location = New System.Drawing.Point(254, 58)
-        Me.setLoactionbtn.Name = "setLoactionbtn"
-        Me.setLoactionbtn.Size = New System.Drawing.Size(101, 47)
-        Me.setLoactionbtn.TabIndex = 3
-        Me.setLoactionbtn.Text = "Locate nircmd.exe Parent Directory"
-        Me.setLoactionbtn.UseVisualStyleBackColor = True
         '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.status})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 181)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(367, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(299, 22)
         Me.StatusStrip1.TabIndex = 4
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -93,7 +73,7 @@ Partial Class main
         '
         'btnHelp
         '
-        Me.btnHelp.Location = New System.Drawing.Point(159, 155)
+        Me.btnHelp.Location = New System.Drawing.Point(218, 157)
         Me.btnHelp.Name = "btnHelp"
         Me.btnHelp.Size = New System.Drawing.Size(38, 21)
         Me.btnHelp.TabIndex = 5
@@ -106,12 +86,22 @@ Partial Class main
         Me.grpBoxIcon.Controls.Add(Me.ptBoxSpeaker)
         Me.grpBoxIcon.Controls.Add(Me.rdoHeadPhone)
         Me.grpBoxIcon.Controls.Add(Me.rdoSpeaker)
-        Me.grpBoxIcon.Location = New System.Drawing.Point(160, 31)
+        Me.grpBoxIcon.Location = New System.Drawing.Point(194, 12)
         Me.grpBoxIcon.Name = "grpBoxIcon"
         Me.grpBoxIcon.Size = New System.Drawing.Size(88, 100)
         Me.grpBoxIcon.TabIndex = 6
         Me.grpBoxIcon.TabStop = False
         Me.grpBoxIcon.Text = "Select Icon"
+        '
+        'ptBoxHeadPhone
+        '
+        Me.ptBoxHeadPhone.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.ptBoxHeadPhone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.ptBoxHeadPhone.Location = New System.Drawing.Point(6, 55)
+        Me.ptBoxHeadPhone.Name = "ptBoxHeadPhone"
+        Me.ptBoxHeadPhone.Size = New System.Drawing.Size(56, 30)
+        Me.ptBoxHeadPhone.TabIndex = 3
+        Me.ptBoxHeadPhone.TabStop = False
         '
         'ptBoxSpeaker
         '
@@ -143,26 +133,14 @@ Partial Class main
         Me.rdoSpeaker.TabStop = True
         Me.rdoSpeaker.UseVisualStyleBackColor = True
         '
-        'ptBoxHeadPhone
-        '
-        Me.ptBoxHeadPhone.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.ptBoxHeadPhone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.ptBoxHeadPhone.Location = New System.Drawing.Point(6, 55)
-        Me.ptBoxHeadPhone.Name = "ptBoxHeadPhone"
-        Me.ptBoxHeadPhone.Size = New System.Drawing.Size(56, 30)
-        Me.ptBoxHeadPhone.TabIndex = 3
-        Me.ptBoxHeadPhone.TabStop = False
-        '
         'main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(367, 203)
+        Me.ClientSize = New System.Drawing.Size(299, 203)
         Me.Controls.Add(Me.grpBoxIcon)
-        Me.Controls.Add(Me.setLoactionbtn)
         Me.Controls.Add(Me.btnHelp)
         Me.Controls.Add(Me.StatusStrip1)
-        Me.Controls.Add(Me.installBtn)
         Me.Controls.Add(Me.createShortcutBtn)
         Me.Controls.Add(Me.audioDeviceCB)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
@@ -173,8 +151,8 @@ Partial Class main
         Me.StatusStrip1.PerformLayout()
         Me.grpBoxIcon.ResumeLayout(False)
         Me.grpBoxIcon.PerformLayout()
-        CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ptBoxHeadPhone, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -182,8 +160,6 @@ Partial Class main
 
     Friend WithEvents audioDeviceCB As ListBox
     Friend WithEvents createShortcutBtn As Button
-    Friend WithEvents installBtn As Button
-    Friend WithEvents setLoactionbtn As Button
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents status As ToolStripStatusLabel
     Friend WithEvents btnHelp As Button

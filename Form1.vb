@@ -4,6 +4,7 @@ Imports Microsoft.Win32
 Imports System.IO
 Imports System.IO.Compression
 Imports System.Net
+Imports System.Security.AccessControl
 Imports System.Windows.Forms.VisualStyles
 Imports IWshRuntimeLibrary
 
@@ -63,11 +64,124 @@ Public Class main
         ptBoxSpeaker.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         ptBoxHeadPhone.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
 
-        status.Text = "Click Install NirCMD or Click Locate"
+        status.Text = "Select Audio Dervice and click Create"
         Me.Update()
     End Sub
 
     Private Sub createShortcutBtn_Click(sender As Object, e As EventArgs) Handles createShortcutBtn.Click
+
+
+
+
+        Dim NirCMDWebsite As String = "http://www.nirsoft.net/utils/nircmd.zip"
+        Dim installPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+
+
+        'Check if nircmd directory exists
+        Dim nirCmdExists = False
+
+        For Each Dir As String In Directory.GetDirectories(installPath)
+            If (Dir.Equals(installPath + "\NirCMD")) Then
+
+                nirCmdExists = True
+
+                If (Not New FileInfo(installPath + "\NirCMD" + "\NirCmd.chm").Exists) Then
+                    status.Text = installPath + "\NirCMD" + "\NirCmd.chm"
+                    Me.Update()
+                    nirCmdExists = False
+                End If
+
+                If (Not New FileInfo(installPath + "\NirCMD" + "\nircmd.exe").Exists) Then
+                    status.Text = installPath + "\NirCMD" + "\nircmd.exe."
+                    Me.Update()
+                    nirCmdExists = False
+                End If
+
+                If (Not New FileInfo(installPath + "\NirCMD" + "\nircmdc.exe").Exists) Then
+                    status.Text = installPath + "\NirCMD" + "\nircmdc.exe."
+                    Me.Update()
+                    nirCmdExists = False
+                End If
+            End If
+        Next
+
+
+        If (Not nirCmdExists) Then
+
+
+            Dim temp_NirCMDDir = New DirectoryInfo(installPath + "\NirCMD")
+            temp_NirCMDDir.Create()
+
+
+
+
+            'download from website'
+            Dim webClient As New WebClient
+            webClient.DownloadFile(NirCMDWebsite, installPath + "\NirCMD\NirCMD.zip")
+
+            status.Text = "Downloaded"
+            Me.Update()
+            Threading.Thread.Sleep(500)
+
+            Dim fullpath = installPath + "\NirCMD"
+
+            status.Text = "Unpacking"
+            Me.Update()
+            Threading.Thread.Sleep(500)
+
+            'Extracts downloaded zip'
+            Try
+                ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
+
+            Catch ex As IOException
+                'Part of nircmd.zip exists
+
+                Dim temp_file1 = New FileInfo(fullpath + "\NirCmd.chm")
+                If (temp_file1.Exists) Then
+                    temp_file1.Delete()
+                End If
+
+                temp_file1 = New FileInfo(fullpath + "\NirCmd.exe")
+                If (temp_file1.Exists) Then
+                    temp_file1.Delete()
+                End If
+
+                temp_file1 = New FileInfo(fullpath + "\NirCmdc.exe")
+                If (temp_file1.Exists) Then
+                    temp_file1.Delete()
+                End If
+
+
+                ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
+            End Try
+
+
+
+
+
+            'Deletes zip'
+            Dim nirCmdZip As FileInfo
+            nirCmdZip = New FileInfo(fullpath + "\nircmd.zip")
+            nirCmdZip.Delete()
+        End If
+
+
+
+        NirCMDPath = installPath + "\NirCMD"
+
+        status.Text = "NirCMD path set to : " + NirCMDPath
+        Me.Update()
+
+        nircmd = True
+        If (nircmd = True And selected = True) Then
+            createShortcutBtn.Enabled = True
+            Threading.Thread.Sleep(1000)
+            status.Text = "Click Create Shortcut"
+        Else
+            Threading.Thread.Sleep(1000)
+            status.Text = "Select audio device and click Create Shortcut"
+        End If
+
 
 
 
@@ -166,159 +280,11 @@ Public Class main
     End Sub
 
 
-    Private Sub installBtn_Click(sender As Object, e As EventArgs) Handles installBtn.Click
-        Dim folderBrowser As New FolderBrowserDialog
-        Dim NirCMDWebsite As String = "http://www.nirsoft.net/utils/nircmd.zip"
-        Dim pathString As String = ""
-        Dim folderFile As String = "\NirCMD"
-        Dim fullpath As String = ""
-
-
-        folderBrowser.ShowDialog()
-
-        If (folderBrowser.SelectedPath = Nothing) Then
-            status.Text = "Select an install location"
-            Me.Update()
-            Exit Sub
-        End If
-
-        pathString = folderBrowser.SelectedPath
-        status.Text = "Path set to: " + pathString
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
-        Dim directory As DirectoryInfo = New DirectoryInfo(pathString + folderFile)
-        directory.Create()
-
-
-        status.Text = "Created directory: " + pathString + folderFile
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
-        status.Text = "Downloading Nircmd to : " + pathString + folderFile
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
-        'download from website'
-        Dim webClient As New WebClient
-        webClient.DownloadFile(NirCMDWebsite, pathString + folderFile + "\nircmd.zip")
-
-        status.Text = "Downloaded"
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
-        fullpath = pathString + folderFile
-
-        status.Text = "Unpacking"
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
-        'Checks if file already exists'
-        If (New FileInfo(fullpath + "\nircmdc.exe").Exists) Then
-            status.Text = "File nircmdc.exe exists, removing"
-            Me.Update()
-            Threading.Thread.Sleep(250)
-            Dim file1 As FileInfo = New FileInfo(fullpath + "\nircmdc.exe")
-            file1.Delete()
-        End If
-
-        'Checks if file already exists'
-        If (New FileInfo(fullpath + "\NirCmd.chm").Exists) Then
-            status.Text = "File NirCmd.chm exists, removing"
-            Me.Update()
-            Threading.Thread.Sleep(250)
-            Dim file1 As FileInfo = New FileInfo(fullpath + "\NirCmd.chm")
-            file1.Delete()
-        End If
-
-        'Checks if file already exists'
-        If (New FileInfo(fullpath + "\nircmd.exe").Exists) Then
-            status.Text = "File nircmd.exe exists, removing"
-            Me.Update()
-            Threading.Thread.Sleep(250)
-            Dim file1 As FileInfo = New FileInfo(fullpath + "\nircmd.exe")
-            file1.Delete()
-        End If
-
-        'Extracts downloaded zip'
-        ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
-
-
-        'Deletes zip'
-        Dim file As FileInfo = New FileInfo(fullpath + "\nircmd.zip")
-        file.Delete()
-
-
-        NirCMDPath = fullpath
-
-        status.Text = "NirCMD path set to : " + fullpath
-        Me.Update()
-
-        nircmd = True
-        If (nircmd = True And selected = True) Then
-            createShortcutBtn.Enabled = True
-            Threading.Thread.Sleep(1000)
-            status.Text = "Click Create Shortcut"
-        Else
-            Threading.Thread.Sleep(1000)
-            status.Text = "Select audio device and click Create Shortcut"
-        End If
-
-
-    End Sub
-
-    Private Sub setLoactionbtn_Click(sender As Object, e As EventArgs) Handles setLoactionbtn.Click
-
-        Dim folderBrowser As New FolderBrowserDialog
-        folderBrowser.ShowDialog()
-        Dim pathString = folderBrowser.SelectedPath
-
-        'Checks if selected directory contains all necessary files'
-        If (Not New FileInfo(pathString + "\NirCmd.chm").Exists) Then
-            status.Text = "Missing " + pathString + "\NirCmd.chm"
-            Me.Update()
-            Exit Sub
-        End If
-
-        If (Not New FileInfo(pathString + "\nircmd.exe").Exists) Then
-            status.Text = "Missing " + pathString + "\nircmd.exe."
-            Me.Update()
-            Exit Sub
-        End If
-
-        If (Not New FileInfo(pathString + "\nircmdc.exe").Exists) Then
-            status.Text = "Missing " + pathString + "\nircmdc.exe."
-            Me.Update()
-            Exit Sub
-        End If
-
-        status.Text = "Path set to: " + pathString
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
-        NirCMDPath = pathString
-        nircmd = True
-        If (nircmd = True And selected = True) Then
-            createShortcutBtn.Enabled = True
-            Threading.Thread.Sleep(1000)
-            status.Text = "Click Create Shortcut"
-        Else
-            Threading.Thread.Sleep(1000)
-            status.Text = "Select audio device and click Create Shortcut"
-        End If
-
-    End Sub
 
     Private Sub audioDeviceCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles audioDeviceCB.SelectedIndexChanged
 
         If (audioDeviceCB.SelectedItems.Count = 1) Then
-            selected = True
-
-            If (nircmd = True And selected = True) Then
-                createShortcutBtn.Enabled = True
-            End If
-        Else
-            selected = False
+            createShortcutBtn.Enabled = True
         End If
 
 
@@ -328,7 +294,11 @@ Public Class main
         MessageBox.Show("Creates a taskbar pinnable shortcut to switch audio outputs. Created by Lucas Buccilli")
     End Sub
 
+    Private Sub ptBoxSpeaker_Click(sender As Object, e As EventArgs) Handles ptBoxSpeaker.Click
+        rdoSpeaker.Checked = True
+    End Sub
 
-
-
+    Private Sub ptBoxHeadPhone_Click(sender As Object, e As EventArgs) Handles ptBoxHeadPhone.Click
+        rdoHeadPhone.Checked = True
+    End Sub
 End Class
