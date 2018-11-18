@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AudioShortcut.exe" size="735672">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AudioShortcut.exe" size="735160">
       <assemblyIdentity name="AudioShortcut" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TVzpRaLvctPcbNSgI6yKku4xXH5A9AAr/CX2doOlqME=</dsig:DigestValue>
+        <dsig:DigestValue>Ot/aizsbYVIDbfyLk+JjBi3r1SQA36Km9Stk8Qh2Zyo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

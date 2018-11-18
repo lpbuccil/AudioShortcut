@@ -1,43 +1,41 @@
-﻿Imports System.Diagnostics.Eventing.Reader
-Imports Microsoft.Win32
-
-Imports System.IO
+﻿Imports System.IO
 Imports System.IO.Compression
 Imports System.Net
-Imports System.Security.AccessControl
-Imports System.Windows.Forms.VisualStyles
+Imports System.Threading
 Imports IWshRuntimeLibrary
+Imports Microsoft.Win32
 
 
-
-Public Class main
-
-    Dim selected As Boolean = False
+Public Class Main
+    ReadOnly selected As Boolean = False
     Dim nircmd As Boolean = False
     Dim NirCMDPath As String
     Dim selectedIcon As Icon
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
         'Populates active audio devices'
-        'May fail at any point'
         Try
-            Using myKey As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("MMDevices").OpenSubKey("Audio").OpenSubKey("Render")
-                Try
-                    For Each reg As String In myKey.GetSubKeyNames()
-                        Try
-                            If (myKey.OpenSubKey(reg).GetValue("DeviceState") = 1) Then
-                                Try
-                                    myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue("{a45c254e-df1c-4efd-8020-67d146a850e0}")
-                                    audioDeviceCB.Items.Add(myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue("{a45c254e-df1c-4efd-8020-67d146a850e0},2"))
-                                Catch ex As Exception
-                                End Try
-                            End If
-                        Catch ex As Exception
-                        End Try
-                    Next
-                Catch ex As Exception
-                End Try
+            Using _
+                myKey As RegistryKey =
+                    Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").
+                        OpenSubKey("CurrentVersion").OpenSubKey("MMDevices").OpenSubKey("Audio").OpenSubKey("Render")
+
+                For Each reg As String In myKey.GetSubKeyNames()
+
+                    If (myKey.OpenSubKey(reg).GetValue("DeviceState") = 1) Then
+
+                        myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue("{a45c254e-df1c-4efd-8020-67d146a850e0}")
+                        audioDeviceCB.Items.Add(
+                            myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
+                                "{a45c254e-df1c-4efd-8020-67d146a850e0},2"))
+
+                    End If
+
+                Next
+
+
             End Using
         Catch ex As Exception
         End Try
@@ -61,19 +59,18 @@ Public Class main
         ptBoxSpeaker.Image = speakerBmp
         ptBoxHeadPhone.Image = headphoneBmp
 
-        ptBoxSpeaker.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        ptBoxHeadPhone.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        ptBoxSpeaker.SizeMode = PictureBoxSizeMode.CenterImage
+        ptBoxHeadPhone.SizeMode = PictureBoxSizeMode.CenterImage
 
         status.Text = "Select Audio Dervice and click Create"
         Me.Update()
     End Sub
 
+
     Private Sub createShortcutBtn_Click(sender As Object, e As EventArgs) Handles createShortcutBtn.Click
 
 
-
-
-        Dim NirCMDWebsite As String = "http://www.nirsoft.net/utils/nircmd.zip"
+        Dim NirCMDWebsite = "http://www.nirsoft.net/utils/nircmd.zip"
         Dim installPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
 
 
@@ -86,20 +83,14 @@ Public Class main
                 nirCmdExists = True
 
                 If (Not New FileInfo(installPath + "\NirCMD" + "\NirCmd.chm").Exists) Then
-                    status.Text = installPath + "\NirCMD" + "\NirCmd.chm"
-                    Me.Update()
                     nirCmdExists = False
                 End If
 
                 If (Not New FileInfo(installPath + "\NirCMD" + "\nircmd.exe").Exists) Then
-                    status.Text = installPath + "\NirCMD" + "\nircmd.exe."
-                    Me.Update()
                     nirCmdExists = False
                 End If
 
                 If (Not New FileInfo(installPath + "\NirCMD" + "\nircmdc.exe").Exists) Then
-                    status.Text = installPath + "\NirCMD" + "\nircmdc.exe."
-                    Me.Update()
                     nirCmdExists = False
                 End If
             End If
@@ -109,102 +100,96 @@ Public Class main
         If (Not nirCmdExists) Then
 
 
+            Dim req As System.Net.WebRequest
+            Dim res As System.Net.WebResponse
+
+
+            'check if website website download exists
+            req = System.Net.WebRequest.Create(NirCMDWebsite)
+            Try
+                res = req.GetResponse()
+            Catch ex As WebException
+                ' URL doesn't exists
+
+                status.Text = "NirCMD download site down"
+                Me.Update()
+                Exit Sub
+
+            End Try
+
             Dim temp_NirCMDDir = New DirectoryInfo(installPath + "\NirCMD")
-            temp_NirCMDDir.Create()
+                temp_NirCMDDir.Create()
 
 
+                'download from website'
+                Using webClient As New WebClient
+                    If System.IO.File.Exists(installPath + "\NirCMD\nircmd.zip") Then My.Computer.FileSystem.DeleteFile(installPath + "\NirCMD\nircmd.zip")
+                    webClient.DownloadFile(New Uri(NirCMDWebsite), installPath + "\NirCMD\nircmd.zip")
+                End Using
 
-
-            'download from website'
-            Dim webClient As New WebClient
-            webClient.DownloadFile(NirCMDWebsite, installPath + "\NirCMD\NirCMD.zip")
-
-            status.Text = "Downloaded"
-            Me.Update()
-            Threading.Thread.Sleep(500)
 
             Dim fullpath = installPath + "\NirCMD"
 
-            status.Text = "Unpacking"
-            Me.Update()
-            Threading.Thread.Sleep(500)
 
             'Extracts downloaded zip'
             Try
-                ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
+                    ZipFile.ExtractToDirectory(fullpath + "\NirCMD\nircmd.zip", fullpath)
 
-            Catch ex As IOException
-                'Part of nircmd.zip exists
+                Catch ex As IOException
+                        'Part of nircmd.zip exists
 
-                Dim temp_file1 = New FileInfo(fullpath + "\NirCmd.chm")
-                If (temp_file1.Exists) Then
-                    temp_file1.Delete()
-                End If
+                        Dim temp_file1 = New FileInfo(fullpath + "\NirCmd.chm")
+                        If (temp_file1.Exists) Then
+                            temp_file1.Delete()
+                        End If
 
-                temp_file1 = New FileInfo(fullpath + "\NirCmd.exe")
-                If (temp_file1.Exists) Then
-                    temp_file1.Delete()
-                End If
+                        temp_file1 = New FileInfo(fullpath + "\NirCmd.exe")
+                        If (temp_file1.Exists) Then
+                            temp_file1.Delete()
+                        End If
 
-                temp_file1 = New FileInfo(fullpath + "\NirCmdc.exe")
-                If (temp_file1.Exists) Then
-                    temp_file1.Delete()
-                End If
-
-
-                ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
-            End Try
+                        temp_file1 = New FileInfo(fullpath + "\NirCmdc.exe")
+                        If (temp_file1.Exists) Then
+                            temp_file1.Delete()
+                        End If
 
 
+                    ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
+                End Try
+
+
+                    'Deletes zip'
+                    Dim nirCmdZip As FileInfo
+                nirCmdZip = New FileInfo(fullpath + "\nircmd.zip")
+                nirCmdZip.Delete()
 
 
 
-            'Deletes zip'
-            Dim nirCmdZip As FileInfo
-            nirCmdZip = New FileInfo(fullpath + "\nircmd.zip")
-            nirCmdZip.Delete()
         End If
-
 
 
         NirCMDPath = installPath + "\NirCMD"
 
-        status.Text = "NirCMD path set to : " + NirCMDPath
-        Me.Update()
 
         nircmd = True
         If (nircmd = True And selected = True) Then
             createShortcutBtn.Enabled = True
-            Threading.Thread.Sleep(1000)
+            Thread.Sleep(1000)
             status.Text = "Click Create Shortcut"
         Else
-            Threading.Thread.Sleep(1000)
+            Thread.Sleep(1000)
             status.Text = "Select audio device and click Create Shortcut"
         End If
 
 
-
-
         Dim name = audioDeviceCB.SelectedItem.ToString().Replace(" ", "").Replace("-", "")
         Dim nameWithChar = audioDeviceCB.SelectedItem.ToString()
-        Dim file As FileInfo = New FileInfo(NirCMDPath + "\" + name + ".bat")
+        Dim file = New FileInfo(NirCMDPath + "\" + name + ".bat")
 
         'Check if bat file exists, if so, remove'
         If (file.Exists) Then
-            status.Text = $"File exists: {NirCMDPath}\{name}.bat"
-            Me.Update()
-            Threading.Thread.Sleep(500)
             file.Delete()
-            status.Text = $"Removed: {NirCMDPath}\{name}.bat"
-            Me.Update()
-            Threading.Thread.Sleep(500)
         End If
-
-
-
-        status.Text = "Creating Batch: " + NirCMDPath + "\" + name + ".bat"
-        Me.Update()
-        Threading.Thread.Sleep(500)
 
         'Create batch file'
         Dim fs As StreamWriter
@@ -216,10 +201,6 @@ Public Class main
         fs.WriteLine($"{NirCMDPath}{cc} {command} ""{nameWithChar}"" 2 ")
         fs.Close()
 
-        status.Text = "Batch file created"
-        Me.Update()
-        Threading.Thread.Sleep(500)
-
 
         'Creates shortcut'
         Dim wsh = CreateObject("WScript.Shell")
@@ -228,12 +209,9 @@ Public Class main
         DesktopPath = wsh.SpecialFolders("Desktop")
 
         'Check if shortcut exists'
-        Dim temp As FileInfo = New FileInfo($"{DesktopPath}\{name}.lnk")
+        Dim temp = New FileInfo($"{DesktopPath}\{name}.lnk")
         If (temp).Exists Then
             temp.Delete()
-            status.Text = "Shortcut exists, deleting"
-            Me.Update()
-            Threading.Thread.Sleep(500)
         End If
 
         MyShortcut = wsh.CreateShortcut($"{DesktopPath}\{name}.lnk")
@@ -244,7 +222,7 @@ Public Class main
         MyShortcut.WorkingDirectory = wsh.ExpandEnvironmentStrings(NirCMDPath)
 
         'check if dll with icon exists, if so, select icon'
-        Dim dll As FileInfo = New FileInfo("C:\Windows\system32\ddores.dll")
+        Dim dll = New FileInfo("C:\Windows\system32\ddores.dll")
         If dll.Exists Then
             If rdoSpeaker.Checked = True Then
 
@@ -267,27 +245,24 @@ Public Class main
 
         MyShortcut.Save()
 
-        status.Text = "Shortcut created on Desktop"
+        status.Text = "Done, Shortcut created on Desktop"
         Me.Update()
-        Threading.Thread.Sleep(1500)
+        Thread.Sleep(1500)
 
-
-        status.Text = "Done"
 
         Me.Update()
-
-
     End Sub
 
 
-
-    Private Sub audioDeviceCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles audioDeviceCB.SelectedIndexChanged
+    Private Sub audioDeviceCB_SelectedIndexChanged(sender As Object, e As EventArgs) _
+        Handles audioDeviceCB.SelectedIndexChanged
 
         If (audioDeviceCB.SelectedItems.Count = 1) Then
             createShortcutBtn.Enabled = True
         End If
 
-
+        status.Text = "Select Audio Dervice and click Create"
+        Me.Update()
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
@@ -296,9 +271,13 @@ Public Class main
 
     Private Sub ptBoxSpeaker_Click(sender As Object, e As EventArgs) Handles ptBoxSpeaker.Click
         rdoSpeaker.Checked = True
+        status.Text = "Select Audio Dervice and click Create"
+        Me.Update()
     End Sub
 
     Private Sub ptBoxHeadPhone_Click(sender As Object, e As EventArgs) Handles ptBoxHeadPhone.Click
         rdoHeadPhone.Checked = True
+        status.Text = "Select Audio Dervice and click Create"
+        Me.Update()
     End Sub
 End Class
