@@ -29,9 +29,5 @@ C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.vbproj.CoreCompil
 C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.exe
 C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.xml
 C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.pdb
-C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.TrustInfo.xml
-C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.exe.manifest
-C:\Users\Lucas\Documents\AudioShortcut\bin\Debug\AudioShortcut.exe.manifest
-C:\Users\Lucas\Documents\AudioShortcut\bin\Debug\AudioShortcut.application
-C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.application
 C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.Main.resources
+C:\Users\Lucas\Documents\AudioShortcut\obj\Debug\AudioShortcut.AudioDeviceForm.resources

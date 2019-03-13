@@ -22,7 +22,7 @@ Partial Class Main
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(main))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.audioDeviceCB = New System.Windows.Forms.ListBox()
         Me.createShortcutBtn = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -145,7 +145,7 @@ Partial Class Main
         Me.Controls.Add(Me.audioDeviceCB)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "main"
+        Me.Name = "Main"
         Me.Text = "Audio Shortcut"
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()

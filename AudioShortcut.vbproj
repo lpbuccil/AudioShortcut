@@ -72,7 +72,7 @@
     <ManifestKeyFile>AudioShortcut_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -111,6 +111,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioDevice.vb" />
+    <Compile Include="AudioDeviceForm.Designer.vb">
+      <DependentUpon>AudioDeviceForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AudioDeviceForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +142,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AudioDeviceForm.resx">
+      <DependentUpon>AudioDeviceForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
@@ -147,7 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AudioShortcut_TemporaryKey.pfx" />
-    <None Include="My Project\app.manifest" />
+    <None Include="My Project\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

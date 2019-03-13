@@ -11,6 +11,8 @@ Public Class Main
     Dim nircmd As Boolean = False
     Dim NirCMDPath As String
     Dim selectedIcon As Icon
+    Public AudioDeviceList As New List(Of AudioDevice)
+    Private isUnique As Boolean
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -26,10 +28,22 @@ Public Class Main
 
                     If (myKey.OpenSubKey(reg).GetValue("DeviceState") = 1) Then
 
+                        Dim curAudioDevice As AudioDevice = New AudioDevice()
+                        curAudioDevice.deviceID = reg
+
                         myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue("{a45c254e-df1c-4efd-8020-67d146a850e0}")
-                        audioDeviceCB.Items.Add(
-                            myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
-                                "{a45c254e-df1c-4efd-8020-67d146a850e0},2"))
+                        ' audioDeviceCB.Items.Add(
+                        'myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
+                        '       "{a45c254e-df1c-4efd-8020-67d146a850e0},2"))
+
+
+
+                        curAudioDevice.deviceName = myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
+                            "{a45c254e-df1c-4efd-8020-67d146a850e0},2")
+                        curAudioDevice.deviceControllerInformation = myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
+                            "{b3f8fa53-0004-438e-9003-51a46e139bfc},6")
+
+                        AudioDeviceList.Add(curAudioDevice)
 
                     End If
 
@@ -39,6 +53,21 @@ Public Class Main
             End Using
         Catch ex As Exception
         End Try
+        audioDeviceCB.DataSource = AudioDeviceList
+        audioDeviceCB.ValueMember = "deviceID"
+        audioDeviceCB.DisplayMember = "deviceName"
+
+
+        Dim deviceName As New List(Of String)
+        For Each audioDeviceInList In AudioDeviceList
+            deviceName.Add(audioDeviceInList.DeviceName)
+        Next
+        isUnique = deviceName.Distinct().Count() = deviceName.Count()
+        If (Not isUnique) Then
+            MessageBox.Show("More than one device have the same name. If you plan to use a shortcut for this device, double click on the device and change its name", "Attention")
+        End If
+
+
 
         'adds icon pictures'
         Dim speakerIcon = My.Resources.ico3011
@@ -266,7 +295,11 @@ Public Class Main
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
-        MessageBox.Show("Creates a taskbar pinnable shortcut to switch audio outputs. Created by Lucas Buccilli")
+        Try
+            Process.Start("https://github.com/lpbuccil/AudioShortcut/wiki")
+        Catch ex As Exception
+            MessageBox.Show("Could not open browser, go to https://github.com/lpbuccil/AudioShortcut/wiki for information")
+        End Try
     End Sub
 
     Private Sub ptBoxSpeaker_Click(sender As Object, e As EventArgs) Handles ptBoxSpeaker.Click
@@ -279,5 +312,11 @@ Public Class Main
         rdoHeadPhone.Checked = True
         status.Text = "Select Audio Dervice and click Create"
         Me.Update()
+    End Sub
+
+    Private Sub audioDeviceCB_DoubleClick(sender As Object, e As EventArgs) Handles audioDeviceCB.DoubleClick
+        Dim AudioDeviceInfo As New AudioDeviceForm
+        Me.Enabled = False
+        AudioDeviceInfo.Show()
     End Sub
 End Class
