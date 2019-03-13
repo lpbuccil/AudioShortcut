@@ -14,9 +14,9 @@ Public Class Main
     Public AudioDeviceList As New List(Of AudioDevice)
     Private isUnique As Boolean
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Public Sub loadDevices()
 
-
+        AudioDeviceList = New List(Of AudioDevice)
         'Populates active audio devices'
         Try
             Using _
@@ -29,7 +29,7 @@ Public Class Main
                     If (myKey.OpenSubKey(reg).GetValue("DeviceState") = 1) Then
 
                         Dim curAudioDevice As AudioDevice = New AudioDevice()
-                        curAudioDevice.deviceID = reg
+                        curAudioDevice.DeviceID = reg
 
                         myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue("{a45c254e-df1c-4efd-8020-67d146a850e0}")
                         ' audioDeviceCB.Items.Add(
@@ -38,7 +38,7 @@ Public Class Main
 
 
 
-                        curAudioDevice.deviceName = myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
+                        curAudioDevice.DeviceName = myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
                             "{a45c254e-df1c-4efd-8020-67d146a850e0},2")
                         curAudioDevice.deviceControllerInformation = myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
                             "{b3f8fa53-0004-438e-9003-51a46e139bfc},6")
@@ -66,8 +66,11 @@ Public Class Main
         If (Not isUnique) Then
             MessageBox.Show("More than one device have the same name. If you plan to use a shortcut for this device, double click on the device and change its name", "Attention")
         End If
+    End Sub
 
+    Public Sub initalize()
 
+        loadDevices()
 
         'adds icon pictures'
         Dim speakerIcon = My.Resources.ico3011
@@ -93,6 +96,10 @@ Public Class Main
 
         status.Text = "Select Audio Dervice and click Create"
         Me.Update()
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        initalize()
     End Sub
 
 

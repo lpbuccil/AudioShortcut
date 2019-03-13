@@ -25,7 +25,11 @@ Public Class AudioDeviceForm
                 End If
 
             Next
-            Application.Restart()
+
+            Main.loadDevices()
+            Main.Enabled = True
+            Me.Close()
+
         Catch ex As Exception
             MessageBox.Show("Could not change name, please change it through the sound menu in control panel.")
 
