@@ -26,7 +26,9 @@ Public Class AudioDeviceForm
 
             Next
 
+            Main.tbLog.Text = ""
             Main.loadDevices()
+            Main.tbLog.AppendText(vbNewLine + "_Select device and click create.")
             Main.Enabled = True
             Me.Close()
 

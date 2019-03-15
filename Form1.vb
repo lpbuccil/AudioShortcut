@@ -3,6 +3,7 @@ Imports System.IO.Compression
 Imports System.Net
 Imports System.Threading
 Imports IWshRuntimeLibrary
+Imports Microsoft.VisualBasic.Devices
 Imports Microsoft.Win32
 
 
@@ -23,6 +24,7 @@ Public Class Main
                 myKey As RegistryKey =
                     Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").
                         OpenSubKey("CurrentVersion").OpenSubKey("MMDevices").OpenSubKey("Audio").OpenSubKey("Render")
+                tbLog.AppendText("_Looking for devices.")
 
                 For Each reg As String In myKey.GetSubKeyNames()
 
@@ -32,11 +34,6 @@ Public Class Main
                         curAudioDevice.DeviceID = reg
 
                         myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue("{a45c254e-df1c-4efd-8020-67d146a850e0}")
-                        ' audioDeviceCB.Items.Add(
-                        'myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
-                        '       "{a45c254e-df1c-4efd-8020-67d146a850e0},2"))
-
-
 
                         curAudioDevice.DeviceName = myKey.OpenSubKey(reg).OpenSubKey("Properties").GetValue(
                             "{a45c254e-df1c-4efd-8020-67d146a850e0},2")
@@ -44,6 +41,7 @@ Public Class Main
                             "{b3f8fa53-0004-438e-9003-51a46e139bfc},6")
 
                         AudioDeviceList.Add(curAudioDevice)
+                        tbLog.AppendText(vbNewLine + "_Found device:" + curAudioDevice.DeviceName + ".")
 
                     End If
 
@@ -52,19 +50,23 @@ Public Class Main
 
             End Using
         Catch ex As Exception
+            tbLog.AppendText(vbNewLine + "_Error opening registry.")
         End Try
         audioDeviceCB.DataSource = AudioDeviceList
         audioDeviceCB.ValueMember = "deviceID"
         audioDeviceCB.DisplayMember = "deviceName"
 
 
+        'check for duplicates
         Dim deviceName As New List(Of String)
         For Each audioDeviceInList In AudioDeviceList
             deviceName.Add(audioDeviceInList.DeviceName)
         Next
         isUnique = deviceName.Distinct().Count() = deviceName.Count()
         If (Not isUnique) Then
-            MessageBox.Show("More than one device have the same name. If you plan to use a shortcut for this device, double click on the device and change its name", "Attention")
+            Me.Width = 527
+            tbLog.Visible = True
+            tbLog.AppendText(vbNewLine + "!!_More than one device have the same name. If you plan to use a shortcut for this device, double click on the device and change its name")
         End If
     End Sub
 
@@ -94,12 +96,16 @@ Public Class Main
         ptBoxSpeaker.SizeMode = PictureBoxSizeMode.CenterImage
         ptBoxHeadPhone.SizeMode = PictureBoxSizeMode.CenterImage
 
-        status.Text = "Select Audio Dervice and click Create"
+        tbLog.AppendText(vbNewLine + "_Select Audio Dervice and click Create.")
+
         Me.Update()
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        btnLog_Click(btnLog, New EventArgs())
         initalize()
+
+
     End Sub
 
 
@@ -115,18 +121,21 @@ Public Class Main
 
         For Each Dir As String In Directory.GetDirectories(installPath)
             If (Dir.Equals(installPath + "\NirCMD")) Then
-
+                tbLog.AppendText(vbNewLine + "_Found previous NirCmd, checking integrity.")
                 nirCmdExists = True
 
                 If (Not New FileInfo(installPath + "\NirCMD" + "\NirCmd.chm").Exists) Then
+                    tbLog.AppendText(vbNewLine + "_Missing NirCmd.chm.")
                     nirCmdExists = False
                 End If
 
                 If (Not New FileInfo(installPath + "\NirCMD" + "\nircmd.exe").Exists) Then
+                    tbLog.AppendText(vbNewLine + "_Missing nircmd.exe.")
                     nirCmdExists = False
                 End If
 
                 If (Not New FileInfo(installPath + "\NirCMD" + "\nircmdc.exe").Exists) Then
+                    tbLog.AppendText(vbNewLine + "_Missing nircmdc.exe.")
                     nirCmdExists = False
                 End If
             End If
@@ -135,6 +144,7 @@ Public Class Main
 
         If (Not nirCmdExists) Then
 
+            tbLog.AppendText(vbNewLine + "_NirCmd missing.")
 
             Dim req As System.Net.WebRequest
             Dim res As System.Net.WebResponse
@@ -144,24 +154,39 @@ Public Class Main
             req = System.Net.WebRequest.Create(NirCMDWebsite)
             Try
                 res = req.GetResponse()
+                tbLog.AppendText(vbNewLine + "_Connection established to nirsoft website.")
             Catch ex As WebException
                 ' URL doesn't exists
+                tbLog.AppendText(vbNewLine + "_NirCmd download site down")
 
-                status.Text = "NirCMD download site down"
                 Me.Update()
                 Exit Sub
 
             End Try
 
+
             Dim temp_NirCMDDir = New DirectoryInfo(installPath + "\NirCMD")
-                temp_NirCMDDir.Create()
+            temp_NirCMDDir.Create()
 
 
-                'download from website'
-                Using webClient As New WebClient
-                    If System.IO.File.Exists(installPath + "\NirCMD\nircmd.zip") Then My.Computer.FileSystem.DeleteFile(installPath + "\NirCMD\nircmd.zip")
+            'download from website'
+            Using webClient As New WebClient
+                If System.IO.File.Exists(installPath + "\NirCMD\nircmd.zip") Then
+                    tbLog.AppendText(vbNewLine + "_nircmd.zip exists, removing.")
+                    My.Computer.FileSystem.DeleteFile(installPath + "\NirCMD\nircmd.zip")
+
+                End If
+                Try
+                    tbLog.AppendText(vbNewLine + "_Downloading nircmd.zip.")
                     webClient.DownloadFile(New Uri(NirCMDWebsite), installPath + "\NirCMD\nircmd.zip")
-                End Using
+                Catch ex As Exception
+                    tbLog.AppendText(vbNewLine + "!!_" + ex.Message)
+                End Try
+
+
+                tbLog.AppendText(vbNewLine + "_Download Complete.")
+            End Using
+
 
 
             Dim fullpath = installPath + "\NirCMD"
@@ -169,37 +194,63 @@ Public Class Main
 
             'Extracts downloaded zip'
             Try
-                    ZipFile.ExtractToDirectory(fullpath + "\NirCMD\nircmd.zip", fullpath)
+                tbLog.AppendText(vbNewLine + "_Extracting.")
+                ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
+                tbLog.AppendText(vbNewLine + "_Extracted nircmd.zip to your documents.")
 
-                Catch ex As IOException
-                        'Part of nircmd.zip exists
+                'Deletes zip'
+                Dim nirCmdZip As FileInfo
+                nirCmdZip = New FileInfo(fullpath + "\nircmd.zip")
+                nirCmdZip.Delete()
+                tbLog.AppendText(vbNewLine + "_nircmd.zip removed.")
 
-                        Dim temp_file1 = New FileInfo(fullpath + "\NirCmd.chm")
-                        If (temp_file1.Exists) Then
-                            temp_file1.Delete()
-                        End If
+                nircmd = True
 
-                        temp_file1 = New FileInfo(fullpath + "\NirCmd.exe")
-                        If (temp_file1.Exists) Then
-                            temp_file1.Delete()
-                        End If
+            Catch ex As IOException
+                tbLog.AppendText(vbNewLine + "!!_" + ex.Message)
+                'Part of nircmd.zip exists
+                tbLog.AppendText(vbNewLine + "_Parts of zip are already extracted.")
 
-                        temp_file1 = New FileInfo(fullpath + "\NirCmdc.exe")
-                        If (temp_file1.Exists) Then
-                            temp_file1.Delete()
-                        End If
+                Dim temp_file1 = New FileInfo(fullpath + "\NirCmd.chm")
+                If (temp_file1.Exists) Then
+                    tbLog.AppendText(vbNewLine + "_Removing NirCmd.chm.")
+                    temp_file1.Delete()
+                End If
 
+                temp_file1 = New FileInfo(fullpath + "\NirCmd.exe")
+                If (temp_file1.Exists) Then
+                    tbLog.AppendText(vbNewLine + "_Removing NirCmd.exe.")
+                    temp_file1.Delete()
+                End If
 
+                temp_file1 = New FileInfo(fullpath + "\NirCmdc.exe")
+                If (temp_file1.Exists) Then
+                    tbLog.AppendText(vbNewLine + "_Removing NirCmdc.exe.")
+                    temp_file1.Delete()
+                End If
+
+                Try
                     ZipFile.ExtractToDirectory(fullpath + "\nircmd.zip", fullpath)
+                    tbLog.AppendText(vbNewLine + "_Extracted nircmd.zip to your documents.")
+                    'Deletes zip'
+                    Dim nirCmdZip As FileInfo
+                    nirCmdZip = New FileInfo(fullpath + "\nircmd.zip")
+                    nirCmdZip.Delete()
+                    tbLog.AppendText(vbNewLine + "_nircmd.zip removed.")
+
+                    nircmd = True
+                Catch exc As IOException
+                    tbLog.AppendText(vbNewLine + "!!_" + exc.Message)
+                    MessageBox.Show("Issue extracting zip", "Error")
+                    Exit Sub
                 End Try
 
 
-                    'Deletes zip'
-                    Dim nirCmdZip As FileInfo
-                nirCmdZip = New FileInfo(fullpath + "\nircmd.zip")
-                nirCmdZip.Delete()
 
 
+            End Try
+        Else
+            tbLog.AppendText(vbNewLine + "_NirCmd is OK.")
 
         End If
 
@@ -207,27 +258,18 @@ Public Class Main
         NirCMDPath = installPath + "\NirCMD"
 
 
-        nircmd = True
-        If (nircmd = True And selected = True) Then
-            createShortcutBtn.Enabled = True
-            Thread.Sleep(1000)
-            status.Text = "Click Create Shortcut"
-        Else
-            Thread.Sleep(1000)
-            status.Text = "Select audio device and click Create Shortcut"
-        End If
-
-
-        Dim name = audioDeviceCB.SelectedItem.ToString().Replace(" ", "").Replace("-", "")
-        Dim nameWithChar = audioDeviceCB.SelectedItem.ToString()
+        Dim name = audioDeviceCB.SelectedItem.deviceName.Replace(" ", "").Replace("-", "")
+        Dim nameWithChar = audioDeviceCB.SelectedItem.deviceName.ToString()
         Dim file = New FileInfo(NirCMDPath + "\" + name + ".bat")
 
         'Check if bat file exists, if so, remove'
         If (file.Exists) Then
+            tbLog.AppendText(vbNewLine + "_Batch file exists, removing.")
             file.Delete()
         End If
 
         'Create batch file'
+        tbLog.AppendText(vbNewLine + "_Creating new batch file " + name + ".bat.")
         Dim fs As StreamWriter
         fs = New StreamWriter(file.ToString(), True)
         fs.WriteLine("@ECHO OFF")
@@ -239,6 +281,7 @@ Public Class Main
 
 
         'Creates shortcut'
+        tbLog.AppendText(vbNewLine + "_Creating shortcut on desktop.")
         Dim wsh = CreateObject("WScript.Shell")
         Dim MyShortcut As WshShortcut
         Dim DesktopPath
@@ -247,6 +290,7 @@ Public Class Main
         'Check if shortcut exists'
         Dim temp = New FileInfo($"{DesktopPath}\{name}.lnk")
         If (temp).Exists Then
+            tbLog.AppendText(vbNewLine + "_Shortcut exists, removing.")
             temp.Delete()
         End If
 
@@ -258,6 +302,7 @@ Public Class Main
         MyShortcut.WorkingDirectory = wsh.ExpandEnvironmentStrings(NirCMDPath)
 
         'check if dll with icon exists, if so, select icon'
+        tbLog.AppendText(vbNewLine + "_Checking if icons exists.")
         Dim dll = New FileInfo("C:\Windows\system32\ddores.dll")
         If dll.Exists Then
             If rdoSpeaker.Checked = True Then
@@ -280,8 +325,7 @@ Public Class Main
 
 
         MyShortcut.Save()
-
-        status.Text = "Done, Shortcut created on Desktop"
+        tbLog.AppendText(vbNewLine + "_Done, shortcut has been created on desktop.")
         Me.Update()
         Thread.Sleep(1500)
 
@@ -296,8 +340,6 @@ Public Class Main
         If (audioDeviceCB.SelectedItems.Count = 1) Then
             createShortcutBtn.Enabled = True
         End If
-
-        status.Text = "Select Audio Dervice and click Create"
         Me.Update()
     End Sub
 
@@ -311,13 +353,11 @@ Public Class Main
 
     Private Sub ptBoxSpeaker_Click(sender As Object, e As EventArgs) Handles ptBoxSpeaker.Click
         rdoSpeaker.Checked = True
-        status.Text = "Select Audio Dervice and click Create"
         Me.Update()
     End Sub
 
     Private Sub ptBoxHeadPhone_Click(sender As Object, e As EventArgs) Handles ptBoxHeadPhone.Click
         rdoHeadPhone.Checked = True
-        status.Text = "Select Audio Dervice and click Create"
         Me.Update()
     End Sub
 
@@ -326,4 +366,20 @@ Public Class Main
         Me.Enabled = False
         AudioDeviceInfo.Show()
     End Sub
+
+    Private Sub tbLog_MouseLeave(sender As Object, e As EventArgs) Handles tbLog.MouseLeave
+        tbLog.DeselectAll()
+        btnHelp.Focus()
+    End Sub
+
+    Private Sub btnLog_Click(sender As Object, e As EventArgs) Handles btnLog.Click
+        If (tbLog.Visible) Then
+            tbLog.Visible = False
+            Me.Width = 312
+        Else
+            tbLog.Visible = True
+            Me.Width = 527
+        End If
+    End Sub
+
 End Class

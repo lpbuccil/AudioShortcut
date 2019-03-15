@@ -25,18 +25,20 @@ Partial Class Main
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.audioDeviceCB = New System.Windows.Forms.ListBox()
         Me.createShortcutBtn = New System.Windows.Forms.Button()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.status = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btnHelp = New System.Windows.Forms.Button()
         Me.grpBoxIcon = New System.Windows.Forms.GroupBox()
         Me.ptBoxHeadPhone = New System.Windows.Forms.PictureBox()
         Me.ptBoxSpeaker = New System.Windows.Forms.PictureBox()
         Me.rdoHeadPhone = New System.Windows.Forms.RadioButton()
         Me.rdoSpeaker = New System.Windows.Forms.RadioButton()
-        Me.StatusStrip1.SuspendLayout()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnLog = New System.Windows.Forms.Button()
+        Me.tbLog = New System.Windows.Forms.RichTextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.grpBoxIcon.SuspendLayout()
         CType(Me.ptBoxHeadPhone, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'audioDeviceCB
@@ -50,30 +52,16 @@ Partial Class Main
         'createShortcutBtn
         '
         Me.createShortcutBtn.Enabled = False
-        Me.createShortcutBtn.Location = New System.Drawing.Point(194, 128)
+        Me.createShortcutBtn.Location = New System.Drawing.Point(185, 112)
         Me.createShortcutBtn.Name = "createShortcutBtn"
         Me.createShortcutBtn.Size = New System.Drawing.Size(88, 23)
         Me.createShortcutBtn.TabIndex = 1
         Me.createShortcutBtn.Text = "Create Shortcut"
         Me.createShortcutBtn.UseVisualStyleBackColor = True
         '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.status})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 181)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(299, 22)
-        Me.StatusStrip1.TabIndex = 4
-        Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'status
-        '
-        Me.status.Name = "status"
-        Me.status.Size = New System.Drawing.Size(0, 17)
-        '
         'btnHelp
         '
-        Me.btnHelp.Location = New System.Drawing.Point(218, 157)
+        Me.btnHelp.Location = New System.Drawing.Point(210, 138)
         Me.btnHelp.Name = "btnHelp"
         Me.btnHelp.Size = New System.Drawing.Size(38, 21)
         Me.btnHelp.TabIndex = 5
@@ -133,26 +121,66 @@ Partial Class Main
         Me.rdoSpeaker.TabStop = True
         Me.rdoSpeaker.UseVisualStyleBackColor = True
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnLog)
+        Me.GroupBox1.Controls.Add(Me.createShortcutBtn)
+        Me.GroupBox1.Controls.Add(Me.btnHelp)
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 2)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(280, 189)
+        Me.GroupBox1.TabIndex = 8
+        Me.GroupBox1.TabStop = False
+        '
+        'btnLog
+        '
+        Me.btnLog.Location = New System.Drawing.Point(210, 162)
+        Me.btnLog.Name = "btnLog"
+        Me.btnLog.Size = New System.Drawing.Size(38, 21)
+        Me.btnLog.TabIndex = 6
+        Me.btnLog.Text = "Log"
+        Me.btnLog.UseVisualStyleBackColor = True
+        '
+        'tbLog
+        '
+        Me.tbLog.Location = New System.Drawing.Point(294, 8)
+        Me.tbLog.Name = "tbLog"
+        Me.tbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
+        Me.tbLog.Size = New System.Drawing.Size(205, 183)
+        Me.tbLog.TabIndex = 10
+        Me.tbLog.Text = ""
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.Label1.Location = New System.Drawing.Point(383, 191)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(126, 13)
+        Me.Label1.TabIndex = 11
+        Me.Label1.Text = "Created by Lucas Buccilli"
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(299, 203)
+        Me.ClientSize = New System.Drawing.Size(511, 203)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.tbLog)
         Me.Controls.Add(Me.grpBoxIcon)
-        Me.Controls.Add(Me.btnHelp)
-        Me.Controls.Add(Me.StatusStrip1)
-        Me.Controls.Add(Me.createShortcutBtn)
         Me.Controls.Add(Me.audioDeviceCB)
+        Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Main"
         Me.Text = "Audio Shortcut"
-        Me.StatusStrip1.ResumeLayout(False)
-        Me.StatusStrip1.PerformLayout()
         Me.grpBoxIcon.ResumeLayout(False)
         Me.grpBoxIcon.PerformLayout()
         CType(Me.ptBoxHeadPhone, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ptBoxSpeaker, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -160,8 +188,6 @@ Partial Class Main
 
     Friend WithEvents audioDeviceCB As ListBox
     Friend WithEvents createShortcutBtn As Button
-    Friend WithEvents StatusStrip1 As StatusStrip
-    Friend WithEvents status As ToolStripStatusLabel
     Friend WithEvents btnHelp As Button
     Friend WithEvents ListView1 As ListView
     Friend WithEvents grpBoxIcon As GroupBox
@@ -169,4 +195,8 @@ Partial Class Main
     Friend WithEvents rdoSpeaker As RadioButton
     Friend WithEvents ptBoxSpeaker As PictureBox
     Friend WithEvents ptBoxHeadPhone As PictureBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents tbLog As RichTextBox
+    Friend WithEvents btnLog As Button
+    Friend WithEvents Label1 As Label
 End Class
