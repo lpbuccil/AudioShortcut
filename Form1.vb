@@ -18,6 +18,7 @@ Public Class Main
     Public Sub loadDevices()
 
         AudioDeviceList = New List(Of AudioDevice)
+
         'Populates active audio devices'
         Try
             Using _
